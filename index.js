@@ -9,11 +9,14 @@ var h = 100;
 var faceTable = ['.left .inner', '.back .inner', '.right .inner', '.front .inner'];
 
 var left = document.querySelectorAll('.left')[0];
+
 var Box = function() {
   this.el = document.querySelectorAll('.box')[0];
   this.w = 255;
   this.h = 455;
   this.curFace = ".left .inner";
+  this.rotateQueue = [];
+  this.rotating = false;
   function convert_rotate(i) {
     return [0,3,2,1,4][i];
   }
@@ -34,7 +37,32 @@ var Box = function() {
 
   this.init = function(player) {
     this.player = player;
+  };
+  this.doRotate = function() {
+    console.log('do rotate');
+    if (!this.rotating) {
+      this._doRotate()
+    }
   }
+  this._doRotate = function() {
+    var self = this;
+    var el = this.rotateQueue[0];
+    var onAnimationEnd = function() {
+      self.rotateQueue.shift();
+      console.log('animation ends');
+      if (self.rotateQueue.length > 0) {
+        self._doRotate();
+      } else {
+        self.rotating = false;
+      }
+      self.el.removeEventListener('webkitAnimationEnd', onAnimationEnd);
+    };
+    this.rotating = true;
+    if (el === 'acw') self.acw();
+    if (el === 'cw') self.cw();
+
+    this.el.addEventListener('webkitAnimationEnd', onAnimationEnd, false);
+  };
   this.cw = function() {
     var name = box.el.style.webkitAnimationName;
     var i;
@@ -332,18 +360,20 @@ window.addEventListener('keydown', function(ev) {
     ev.preventDefault();
   }
   // rotate and move the world
-  if (ev.keyCode === 65 && !running) { // right rotate
+  if (ev.keyCode === 65) { // right rotate
     running = true;
     setTimeout(function(){
       running = false;
     }, 900);
-    box.acw();
-  } else if (ev.keyCode === 68 && !running) {
+    box.rotateQueue.push('acw');
+    box.doRotate();
+  } else if (ev.keyCode === 68) {
     running = true;
     setTimeout(function(){
       running = false;
     }, 900);
-    box.cw()
+    box.rotateQueue.push('cw');
+    box.doRotate();
   } else if (ev.keyCode === 87) { // up
     _box.style.top =  h + 'px';
     h -= 10;
