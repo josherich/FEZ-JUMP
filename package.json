@@ -1,0 +1,30 @@
+{
+  "name": "fez-jump",
+  "version": "0.0.1",
+  "description": "jump like fex",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josherich/fezJump"
+  },
+  "keywords": [
+    "fez",
+    "jump"
+  ],
+  "author": "josherich",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/josherich/fezJump/issues"
+  },
+  "devDependencies": {
+    "browserify": "^10.0.0",
+    "watchify": "^3.2.2",
+    "jquery": "~2.1.1",
+    "underscore": "~1.6.0"
+  },
+  "homepage": "https://github.com/josherich/fezJump"
+}
