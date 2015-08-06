@@ -3,10 +3,13 @@ window.$ = require('jquery');
 var Box = require('./box');
 var Player = require('./player');
 var Steps = require('./steps');
+var Sprite = require('./sprite');
 var running = false;
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+var wrapStyle = window.document.querySelector('.wrap').style;
 
 var _box = window.document.querySelectorAll('.box')[0];
 
@@ -18,13 +21,20 @@ _box.style.position = 'fixed';
 window.fez = {};
 window.fez.box = new Box();
 window.fez.player = new Player();
+window.fez.playerSprite = new Sprite(window.fez.player.getDOM(), {
+  imgW: 32,
+  imgH: 32,
+  url: './images/jump.png',
+  count: '12'
+});
+
 window.fez.steps = new Steps()
+window.fez.boxEl = _box;
 
 window.addEventListener('keydown', function(ev) {
   // move player
   var player = window.fez.player;
   var box = window.fez.box;
-
   if (ev.keyCode == 37 && !running) {
     player.left = true;
     ev.preventDefault();
@@ -51,11 +61,12 @@ window.addEventListener('keydown', function(ev) {
     }, 900);
     box.cw()
   } else if (ev.keyCode === 87) { // up
-    _box.style.top =  h + 'px';
-    h -= 10;
+    // _box.style.top = increasePx(_box.style.top);
+    // wrapStyle.perspective = increasePx(wrapStyle.perspective);
   } else if (ev.keyCode === 83) {
-    _box.style.top = h + 'px';
-    h += 10;
+    // _box.style.top = decreasePx(_box.style.top);
+    // wrapStyle.perspective = decreasePx(wrapStyle.perspective);
+
   }
 }, false);
 
@@ -77,6 +88,17 @@ window.addEventListener('keyup', function(ev) {
   }
   console.log(box.curFace);
 }, false);
+
+function increasePx (px) {
+  if (!px) return '10px';
+  var n = parseInt(px.replace('px','')) + 10;
+  return n + 'px';
+}
+function decreasePx (px) {
+  if (!px) return '10px';
+  var n = parseInt(px.replace('px','')) - 10;
+  return n + 'px';
+}
 
 function findKeyframesRule(rule) {
   var ss = document.stylesheets;

@@ -1,8 +1,8 @@
 var Player = function() {
   var box = window.fez.box;
   this.el = document.querySelectorAll('.player')[0];
-  this.jumpSpeed = 12;
-  this.moveSpeed = 1.5;
+  this.jumpSpeed = 10;
+  this.moveSpeed = 1;
   this.maxMove = 8;
   this.gravity = -0.6;
   this.bounce = 0.1;
@@ -70,6 +70,16 @@ var Player = function() {
 
   this.draw = function() {
     this.el.style.webkitTransform = 'translate(' + this.x + 'px, -' + this.y + 'px)';
+    this.updatePerspective();
+  }
+
+  this.updatePerspective = function() {
+    var y = this.y * 290 / 455 - 130;
+    window.fez.boxEl.style.top = y + 'px';
+  }
+
+  this.getDOM = function() {
+    return this.el;
   }
 }
 

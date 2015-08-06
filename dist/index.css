@@ -8,8 +8,8 @@ body {
 Adjust variables to change the size of the box
 */
 .wrap {
-  -webkit-perspective: 80rem;
-          perspective: 80rem;
+  -webkit-perspective: 1000px;
+          perspective: 1000px;
   -webkit-perspective-origin: 50% 50% 0;
           perspective-origin: 50% 50% 0;
   width: 255px;
@@ -81,11 +81,10 @@ Adjust variables to change the size of the box
 .player {
   position: absolute;
   left: 0;
-  bottom: 0;
-  width: 10px;
-  height: 30px;
-  background: white;
-  border: 1px solid blue; }
+  bottom: 0; }
+
+.player1 {
+  background: url(./images/jump.gif); }
 
 .rect {
   position: absolute;

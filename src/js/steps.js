@@ -11,7 +11,7 @@ function Step(face, x, y) {
   this.x = x;
   this.y = y;
 
-  this.enemy = new Enemy(this);
+  // this.enemy = new Enemy(this);
 
   this.getX = function() {
     return this.x;
