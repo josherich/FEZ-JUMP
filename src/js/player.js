@@ -1,6 +1,8 @@
+var Bullet = require('./bullet');
+
 var Player = function() {
   var box = window.fez.box;
-  this.el = document.querySelectorAll('.player')[0];
+  this.el = document.querySelector('.player');
   this.jumpSpeed = 10;
   this.moveSpeed = 1;
   this.maxMove = 8;
@@ -18,7 +20,11 @@ var Player = function() {
   this.maxp = box.w;
 
   this.dead = false;
-  this.left = 0;
+  this.left = false;
+  this.right = false;
+  this.facing = 1; // right
+
+  this.bullets = [];
 
   this.move = function() {
     var steps = window.fez.steps;
@@ -54,33 +60,57 @@ var Player = function() {
     if (this.dead == 0) {
       this.gameOver = true;
     }
+
+    this.bullets.map(function(bullet) {
+      bullet.move();
+    });
+
   }
 
   this.look = function() {
     console.log('p: ', this.p);
     console.log('y: ', this.y);
     console.log('vy: ', this.vy);
-  }
+  };
+
+  this.shoot = function() {
+    var bullet = new Bullet(this);
+    this.bullets.push(bullet);
+    bullet.shoot();
+  };
 
   this.canJump = function() {
     var steps = window.fez.steps;
     var tolerance = Math.max(-this.vy, 8);
     return steps.playerIsOnAnyStep(tolerance) || this.y == 0;
-  }
+  };
 
   this.draw = function() {
     this.el.style.webkitTransform = 'translate(' + this.x + 'px, -' + this.y + 'px)';
+    this.bullets.map(function(bullet) {
+      bullet.draw();
+    });
     this.updatePerspective();
-  }
+  };
 
   this.updatePerspective = function() {
     var y = this.y * 290 / 455 - 130;
     window.fez.boxEl.style.top = y + 'px';
-  }
+  };
 
   this.getDOM = function() {
     return this.el;
-  }
+  };
+
+  this.turnLeft = function() {
+    this.left = true;
+    this.facing = -1;
+  };
+
+  this.turnRight = function() {
+    this.right = true;
+    this.facing = 1;
+  };
 }
 
 module.exports = Player;

@@ -21,12 +21,47 @@ _box.style.position = 'fixed';
 window.fez = {};
 window.fez.box = new Box();
 window.fez.player = new Player();
-window.fez.playerSprite = new Sprite(window.fez.player.getDOM(), {
-  imgW: 32,
-  imgH: 32,
-  url: './images/jump.png',
-  count: '12'
-});
+window.fez.playerSprite = new Sprite('./images/jumplr.png', [
+  {
+    name: 'right',
+    el: window.fez.player.getDOM(),
+    imgW: 14,
+    imgH: 21,
+    x: 0,
+    y: 0,
+    count: 12,
+    state: function() { return window.fez.player.right;}
+  },
+  {
+    name: 'left',
+    el: window.fez.player.getDOM(),
+    imgW: 14,
+    imgH: 21,
+    x: 0,
+    y: 21,
+    count: 12,
+    state: function() { return window.fez.player.left;}
+  }
+]);
+
+window.fez._state = {
+  playing: true
+};
+
+window.fez.control = {
+  playing: function() {
+    return window.fez._state.playing;
+  },
+  stop: function() {
+    window.fez._state.playing = false;
+  },
+  play: function() {
+    window.fez._state.playing = true;
+  },
+  toggle: function() {
+    window.fez._state.playing = !window.fez._state.playing;
+  }
+};
 
 window.fez.steps = new Steps()
 window.fez.boxEl = _box;
@@ -36,11 +71,11 @@ window.addEventListener('keydown', function(ev) {
   var player = window.fez.player;
   var box = window.fez.box;
   if (ev.keyCode == 37 && !running) {
-    player.left = true;
+    player.turnLeft();
     ev.preventDefault();
   }
   if (ev.keyCode == 39 && !running) {
-    player.right = true;
+    player.turnRight();
     ev.preventDefault();
   }
   if (ev.keyCode == 38 && !running) {
@@ -63,10 +98,12 @@ window.addEventListener('keydown', function(ev) {
   } else if (ev.keyCode === 87) { // up
     // _box.style.top = increasePx(_box.style.top);
     // wrapStyle.perspective = increasePx(wrapStyle.perspective);
-  } else if (ev.keyCode === 83) {
+  } else if (ev.keyCode === 16) {
+    window.fez.player.shoot();
     // _box.style.top = decreasePx(_box.style.top);
     // wrapStyle.perspective = decreasePx(wrapStyle.perspective);
-
+  } else if (ev.keyCode === 32) {
+    window.fez.control.toggle();
   }
 }, false);
 
@@ -115,10 +152,13 @@ function findKeyframesRule(rule) {
 function run() {
   var player = window.fez.player;
   var steps = window.fez.steps;
-  player.move();
-  steps.move();
-  player.draw();
-  steps.draw();
+  if (window.fez.control.playing()) {
+    player.move();
+    steps.move();
+    player.draw();
+    steps.draw();
+  }
+
   requestAnimationFrame(run);
 }
 

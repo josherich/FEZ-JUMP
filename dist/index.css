@@ -78,14 +78,14 @@ Adjust variables to change the size of the box
     -webkit-transform: translateZ(127.5px);
             transform: translateZ(127.5px); }
 
-.player {
+.player, .bullet {
   position: absolute;
   left: 0;
   bottom: 0; }
 
-.player1 {
+/*.player1 {
   background: url(./images/jump.gif); }
-
+*/
 .rect {
   position: absolute;
   left: 100px;
