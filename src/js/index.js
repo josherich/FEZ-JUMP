@@ -3,7 +3,7 @@ window.$ = require('jquery');
 var Box = require('./box');
 var Player = require('./player');
 var Steps = require('./steps');
-var Sprite = require('./sprite');
+
 var running = false;
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -16,33 +16,18 @@ var _box = window.document.querySelectorAll('.box')[0];
 _box.style.webkitAnimationName = 'cspin1';
 _box.style.position = 'fixed';
 
-
 // debug
 window.fez = {};
 window.fez.box = new Box();
-window.fez.player = new Player();
-window.fez.playerSprite = new Sprite('./images/jumplr.png', [
-  {
-    name: 'right',
-    el: window.fez.player.getDOM(),
-    imgW: 14,
-    imgH: 21,
-    x: 0,
-    y: 0,
-    count: 12,
-    state: function() { return window.fez.player.right;}
-  },
-  {
-    name: 'left',
-    el: window.fez.player.getDOM(),
-    imgW: 14,
-    imgH: 21,
-    x: 0,
-    y: 21,
-    count: 12,
-    state: function() { return window.fez.player.left;}
-  }
-]);
+window.fez.players = [];
+window.fez.players.push(new Player({
+  id: 1,
+  birth: {x:0, y:0}
+}));
+window.fez.players.push(new Player({
+  id: 2,
+  birth: {x:270, y:0}
+}));
 
 window.fez._state = {
   playing: true
@@ -68,62 +53,104 @@ window.fez.boxEl = _box;
 
 window.addEventListener('keydown', function(ev) {
   // move player
-  var player = window.fez.player;
+  var player1 = window.fez.players[0];
+  var player2 = window.fez.players[1];
   var box = window.fez.box;
+
+  // player1 - a - left
+  if (ev.keyCode == 65 && !running) {
+    player1.turnLeft();
+    ev.preventDefault();
+  }
+  // player1 - d - right
+  if (ev.keyCode == 68 && !running) {
+    player1.turnRight();
+    ev.preventDefault();
+  }
+  // player1 - w - jump
+  if (ev.keyCode == 87 && !running) {
+    player1.jump = true;
+    ev.preventDefault();
+  }
+  // player1 - f - shoot
+  if (ev.keyCode === 70) {
+    player1.shoot();
+  }
+
+  // player2 - left - left
   if (ev.keyCode == 37 && !running) {
-    player.turnLeft();
+    player2.turnLeft();
     ev.preventDefault();
   }
+  // player2 - right - right
   if (ev.keyCode == 39 && !running) {
-    player.turnRight();
+    player2.turnRight();
     ev.preventDefault();
   }
+  // player2 - up - jump
   if (ev.keyCode == 38 && !running) {
-    player.jump = true;
+    player2.jump = true;
     ev.preventDefault();
   }
-  // rotate and move the world
-  if (ev.keyCode === 65 && !running) { // right rotate
+  // player2 - / - shoot
+  if (ev.keyCode === 191) {
+    player2.shoot();
+  }
+
+  // rotate right
+  if (ev.keyCode === 188 && !running) {
     running = true;
     setTimeout(function(){
       running = false;
     }, 900);
     box.acw();
-  } else if (ev.keyCode === 68 && !running) {
+  }
+  // rotate left 
+  if (ev.keyCode === 190 && !running) {
     running = true;
     setTimeout(function(){
       running = false;
     }, 900);
     box.cw()
-  } else if (ev.keyCode === 87) { // up
-    // _box.style.top = increasePx(_box.style.top);
-    // wrapStyle.perspective = increasePx(wrapStyle.perspective);
-  } else if (ev.keyCode === 16) {
-    window.fez.player.shoot();
-    // _box.style.top = decreasePx(_box.style.top);
-    // wrapStyle.perspective = decreasePx(wrapStyle.perspective);
-  } else if (ev.keyCode === 32) {
+  }
+
+  // world - space - toggle play/pause
+  if (ev.keyCode === 32) {
     window.fez.control.toggle();
   }
 }, false);
 
 window.addEventListener('keyup', function(ev) {
-  var player = window.fez.player;
+  var player1 = window.fez.players[0];
+  var player2 = window.fez.players[1];
   var box = window.fez.box;
 
+  if (ev.keyCode == 65 && !running) {
+    player1.left = false;
+    ev.preventDefault();
+  }
+  if (ev.keyCode == 68 && !running) {
+    player1.right = false;
+    ev.preventDefault();
+  }
+  if (ev.keyCode == 87 && !running) {
+    player1.jump = false;
+    ev.preventDefault();
+  }
+
   if (ev.keyCode == 37 && !running) {
-    player.left = false;
+    player2.left = false;
     ev.preventDefault();
   }
   if (ev.keyCode == 39 && !running) {
-    player.right = false;
+    player2.right = false;
     ev.preventDefault();
   }
   if (ev.keyCode == 38 && !running) {
-    player.jump = false;
+    player2.jump = false;
     ev.preventDefault();
   }
-  console.log(box.curFace);
+  // console.log(box.curFace);
 }, false);
 
 function increasePx (px) {
@@ -149,14 +176,30 @@ function findKeyframesRule(rule) {
   return null;
 }
 
+function updatePerspective() {
+  var ym = 0;
+  var players = window.fez.players;
+  players.map(function(player) {
+    ym += player.y * 290 / 455 - 130;
+  })
+  window.fez.boxEl.style.top = (ym / players.length) + 'px';
+};
+
 function run() {
-  var player = window.fez.player;
+  var players = window.fez.players;
   var steps = window.fez.steps;
   if (window.fez.control.playing()) {
-    player.move();
+    players.map(function(player) {
+      player.move();
+    });
     steps.move();
-    player.draw();
+
+    players.map(function(player) {
+      player.draw();
+    });
+
     steps.draw();
+    updatePerspective();
   }
 
   requestAnimationFrame(run);

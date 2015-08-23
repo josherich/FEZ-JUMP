@@ -1,12 +1,13 @@
 var Enemy = require('./enemy');
 
-function Step(face, x, y) {
+function Step(face, x, y, width) {
   this.face = face;
   this.el = document.createElement('div');
+  this.el.style.width = width + 'px';
   $(this.el).addClass('step');
   $(this.face).append(this.el);
 
-  this.w = 30;
+  this.w = width;
   this.h = 10;
   this.x = x;
   this.y = y;
@@ -28,14 +29,13 @@ function Step(face, x, y) {
     }
   };
 
-  this.playerIsOn = function(tolerance) {
+  this.playerIsOn = function(player, tolerance) {
     tolerance = tolerance || 1;
     var x = this.getX();
-    var player = window.fez.player;
-    if (player.x + player.w < x) {
+    if (player.x + player.w/2 < x) {
       return false;
     }
-    if (player.x - player.w > x + this.w) {
+    if (player.x + player.w/2 > x + this.w) {
       return false;
     }
     var y = this.getY();
@@ -53,9 +53,9 @@ function Step(face, x, y) {
 };
 
 function Steps() {
-  var lx = 40,
+  var lx = 80,
       ly = 30,
-      x0 = 150,
+      x0 = 145,
       y0 = 0;
   this.steps = {'.left .inner':[], '.back .inner':[], '.right .inner':[], '.front .inner':[]};
   this.x = 0;
@@ -68,6 +68,7 @@ function Steps() {
     }
     var randX = Math.random() * lx * 2 - lx;
     var randY = Math.random() * ly;
+    var width = Math.random() * 40 + 20; // 20 - 60
     if (randX + x0 > box.w) {
       this.x = box.w - 20;
     } else if (randX + x0 < 0) {
@@ -79,7 +80,7 @@ function Steps() {
 
     x0 = this.x;
     y0 = this.y;
-    this.steps[face].push(new Step(face, this.x, this.y));
+    this.steps[face].push(new Step(face, this.x, this.y, width));
     this.addNeeded(face);
   };
 
@@ -96,11 +97,11 @@ function Steps() {
     this.addNeeded(faceTable[i]);
   }
 
-  this.playerIsOnAnyStep = function(tolerance) {
+  this.playerIsOnAnyStep = function(player, tolerance) {
     tolerance = tolerance || 1;
     var steps = this.steps[box.curFace];
     for (var i = 0; i < steps.length; i++) {
-      if (steps[i].playerIsOn(tolerance)) {
+      if (steps[i].playerIsOn(player, tolerance)) {
         return true;
       }
     }

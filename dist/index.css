@@ -83,9 +83,20 @@ Adjust variables to change the size of the box
   left: 0;
   bottom: 0; }
 
-/*.player1 {
-  background: url(./images/jump.gif); }
-*/
+#player_0:before, #player_1:before {
+  content: "";
+  width: 100%;
+  height: 3px;
+  position: absolute;
+  top: -5px;
+  left: 0; }
+
+#player_0:before {
+  background: red; }
+
+#player_1:before {
+  background: blue; }
+
 .rect {
   position: absolute;
   left: 100px;
@@ -98,7 +109,6 @@ Adjust variables to change the size of the box
   position: absolute;
   left: 0;
   bottom: 0;
-  width: 30px;
   height: 10px;
   border: 1px solid white; }
 
@@ -109,6 +119,13 @@ Adjust variables to change the size of the box
   width: 5px;
   height: 8px;
   border: 2px solid white; }
+
+.score-board div {
+  color: white;
+  font-size: 48px;
+  width: 50%;
+  float: left;
+  text-align: center; }
 
 @-webkit-keyframes cspin1 {
   from {

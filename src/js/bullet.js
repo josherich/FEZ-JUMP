@@ -1,9 +1,10 @@
 var Sprite = require('./sprite');
 
-var Bullet = function(player) {
+var Bullet = function(player, options) {
   var self = this;
   var box = window.fez.box;
-  var el = document.createElement('div');
+  var type = options.type || 'div'
+  var el = buildElement(type);
   el.className = 'bullet';
   document.querySelector('.left .inner').appendChild(el);
 
@@ -20,29 +21,66 @@ var Bullet = function(player) {
   this.player = player;
   this.direction = player.facing;
 
-  this.sprite = new Sprite('./images/jumplr.png', [{
-    name: 'bullet',
-    el: self.el,
-    imgW: 5,
-    imgH: 5,
-    x: 1,
-    y: 43,
-    count: 1,
-    state: function() { return false; }
-  }]);
+  if (type === 'div') {
+    this.sprite = new Sprite('./images/jumplr.png', [{
+      name: 'bullet',
+      el: self.el,
+      imgW: 5,
+      imgH: 5,
+      x: 1,
+      y: 43,
+      count: 1,
+      state: function() { return false; }
+    }]);
+  }
+
+  function buildElement(type) {
+    var el;
+    switch(type) {
+
+      case 'input.radio':
+        el = document.createElement('input');
+        el.setAttribute('type', 'radio');
+        el.setAttribute('checked', 'checked');
+        break;
+
+      case 'input.checkbox':
+        el = document.createElement('input');
+        el.setAttribute('type', 'checkbox');
+        el.setAttribute('checked', '');
+        break;
+
+      case 'button':
+        el = document.createElement('button');
+        el.textContent = 'b';
+        break;
+
+      case 'select':
+        el = document.createElement('select');
+        break;
+
+      default:
+        el = document.createElement('div');
+    }
+    return el;
+  }
 
   this.shoot = function() {
     this.shooted = true;
     this.direction = player.facing;
   };
 
+  this.disappear = function() {
+    this.dead = true;
+    this.el.style.display = 'none';
+    el.remove();
+  }
+
   this.move = function() {
     if (!this.shooted) return;
 
     if (this.ox > this.maxp || this.ox < 0) {
-      this.dead = true;
-      this.el.style.display = 'none';
-      el.remove();
+      this.disappear();
     } else {
       this.ox += this.moveSpeed * this.direction;
     }
