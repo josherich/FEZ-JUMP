@@ -22,9 +22,11 @@
   },
   "devDependencies": {
     "browserify": "^10.0.0",
-    "watchify": "^3.2.2",
+    "chokidar-cli": "^1.0.1",
     "jquery": "~2.1.1",
-    "underscore": "~1.6.0"
+    "parallelshell": "^2.0.0",
+    "underscore": "~1.6.0",
+    "watchify": "^3.2.2"
   },
   "homepage": "https://github.com/josherich/fezJump"
 }

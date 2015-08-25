@@ -2,6 +2,8 @@ var Bullet = require('./bullet');
 var Sprite = require('./sprite');
 
 var playerID = 0;
+var bulletFreeze = 300;
+var timingWin = 3000;
 
 var Player = function(options) {
   var self = this;
@@ -10,7 +12,7 @@ var Player = function(options) {
   var el = document.createElement('div');
   el.className = 'player';
   el.id = 'player_' + playerID;
-  document.querySelector('.left .inner').appendChild(el);
+  document.querySelector('.box>.left>.inner').appendChild(el);
   playerID++;
 
   this.birth = options.birth || {x:0,y:0};
@@ -21,10 +23,10 @@ var Player = function(options) {
   this.maxMove = 8;
   this.gravity = -0.6;
   this.bounce = 0.1;
-  this.friction = 0.8;
+  this.friction = 0.78;
   this.jump = false;
   this.w = 14;
-
+  this.bulletType = options.bulletType || 'div';
   this.y = this.birth.y;
   this.vy = 0;
 
@@ -37,6 +39,9 @@ var Player = function(options) {
   this.right = false;
   this.facing = 1; // right
   this.score = 0;
+
+  this.timing = false;
+  this.timingTill = 0;
 
   this.bullets = [];
 
@@ -99,7 +104,20 @@ var Player = function(options) {
       this.vy = this.bounce * -this.vy;
     }
 
+    if (steps.playerIsOnTopStep(this, tolerance) && this.carrying()) {
+      this.timing();
+    // } else {
+      // this.stopTiming();
+    }
+
+    if (this.timingTill > timingWin) {
+      console.log('player ' + this.id + ' win');
+      this.win();
+      this.timingTill = 0;
+    }
+
     this.shot();
+    this.pickable();
 
     if (this.dead) {
       this.gameOver = true;
@@ -117,12 +135,76 @@ var Player = function(options) {
     console.log('vy: ', this.vy);
   };
 
+  function throttle (fn, interval) {
+    var throttled = false;
+    return function() {
+      if (throttled) {
+        return;
+      } else {
+        fn()
+        throttled = true;
+        setTimeout(function(){
+          throttled = false;
+        }, interval);
+      }
+    }
+  }
+
+  this.timing = throttle(function() {
+    var now = Date.now();
+    if (!this.prevTime) {
+      this.prevTime = now;
+    }
+    this.timingTill += (now - this.prevTime);
+    this.prevTime = now;
+  }.bind(this), 500);
+
+  this.startTiming = function() {
+    if (this.timing) return;
+    this.timing = true;
+    this.timingStart = Date.now();
+  };
+
+  this.stopTiming = function() {
+    if (!timing) return;
+    this.timing = false;
+    this.timingTill += Date.now() - this.timingStart;
+  }
+
+  this.useBullet = function(type) {
+    this.bulletType = type;
+  };
+
   this.shoot = function() {
-    var bullet = new Bullet(this, {
-      type: 'input.checkbox'
-    });
-    this.bullets.push(bullet);
-    bullet.shoot();
+    var bullet;
+    var self = this;
+    if (this.bulletFreezing) {
+      return;
+    } else {
+      bullet = new Bullet(this, {
+        type: self.bulletType
+      });
+      this.bullets.push(bullet);
+      bullet.shoot();
+      self.bulletFreezing = true;
+      setTimeout(function(){ 
+        self.bulletFreezing = false;
+      }, bulletFreeze);
+    }
+
+  };
+
+  this.pickable = function() {
+    var self = this;
+    var dx = Math.abs(this.x - window.fez.poop.x);
+    var dy = Math.abs(this.y - window.fez.poop.y);
+    if (dx < 8 && dy < 8) {
+      window.fez.poop.picked(this);
+    }
+  };
+
+  this.carrying = function() {
+    return window.fez.poop.player == this;
   };
 
   this.shot = function() {
@@ -164,6 +246,9 @@ var Player = function(options) {
   this.win = function() {
     this.score += 1;
     document.querySelector('#score_' + this.id).textContent = this.score;
+    window.fez.poop.reset();
+    this.timingTill = 0;
+    this.prevTime = null;
   };
 
   this.blink = function(n, callback) {

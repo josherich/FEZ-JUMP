@@ -3,6 +3,7 @@ window.$ = require('jquery');
 var Box = require('./box');
 var Player = require('./player');
 var Steps = require('./steps');
+var Poop = require('./poop');
 
 var running = false;
 
@@ -26,8 +27,10 @@ window.fez.players.push(new Player({
 }));
 window.fez.players.push(new Player({
   id: 2,
-  birth: {x:270, y:0}
+  birth: {x:640, y:0}
 }));
+
+window.fez.poop = new Poop();
 
 window.fez._state = {
   playing: true
@@ -188,17 +191,20 @@ function updatePerspective() {
 function run() {
   var players = window.fez.players;
   var steps = window.fez.steps;
+  var poop = window.fez.poop;
   if (window.fez.control.playing()) {
     players.map(function(player) {
       player.move();
     });
     steps.move();
+    poop.move();
 
     players.map(function(player) {
       player.draw();
     });
 
     steps.draw();
+    poop.draw();
     updatePerspective();
   }
 

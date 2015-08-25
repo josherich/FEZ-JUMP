@@ -6,7 +6,7 @@ var Bullet = function(player, options) {
   var type = options.type || 'div'
   var el = buildElement(type);
   el.className = 'bullet';
-  document.querySelector('.left .inner').appendChild(el);
+  document.querySelector('.box>.left>.inner').appendChild(el);
 
   this.el = el;
   this.moveSpeed = 4;

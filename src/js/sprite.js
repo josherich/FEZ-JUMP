@@ -45,7 +45,7 @@ var Sprite = function(spriteUrl, actions) {
       }
 
     }
-    this.runFlag = setInterval(run.bind(this), 50);
+    this.runFlag = setInterval(run.bind(this), 30);
   };
 
   this.stop = function(action) {

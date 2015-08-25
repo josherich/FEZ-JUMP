@@ -32,10 +32,12 @@ function Step(face, x, y, width) {
   this.playerIsOn = function(player, tolerance) {
     tolerance = tolerance || 1;
     var x = this.getX();
-    if (player.x + player.w/2 < x) {
+    var offset = 4;
+    if (player.x + (player.w/2 + offset) < x) {
       return false;
     }
-    if (player.x + player.w/2 > x + this.w) {
+
+    if (player.x + (player.w/2 - offset) > x + this.w) {
       return false;
     }
     var y = this.getY();
@@ -53,11 +55,11 @@ function Step(face, x, y, width) {
 };
 
 function Steps() {
-  var lx = 80,
+  var lx = 120,
       ly = 30,
-      x0 = 145,
+      x0 = 325,
       y0 = 0;
-  this.steps = {'.left .inner':[], '.back .inner':[], '.right .inner':[], '.front .inner':[]};
+  this.steps = {'.box>.left>.inner':[], '.box>.back>.inner':[], '.box>.right>.inner':[], '.box>.front>.inner':[]};
   this.x = 0;
   this.y = 0;
   var box = window.fez.box;
@@ -87,11 +89,11 @@ function Steps() {
   this.init = function() {
     var i = 5;
     while (i--) {
-      this.steps.push(new Step('.left .inner'));
+      this.steps.push(new Step('.box>.left>.inner'));
     }
   };
 
-  var faceTable = ['.left .inner', '.back .inner', '.right .inner', '.front .inner'];
+  var faceTable = ['.box>.left>.inner', '.box>.back>.inner', '.box>.right>.inner', '.box>.front>.inner'];
 
   for (var i in faceTable) {
     this.addNeeded(faceTable[i]);
@@ -106,6 +108,17 @@ function Steps() {
       }
     }
     return false;
+  };
+
+  this.playerIsOnTopStep = function(player, tolerance) {
+    tolerance = tolerance || 1;
+    var steps = this.steps[box.curFace];
+    if (steps.length > 0) {
+      return steps[steps.length - 1].playerIsOn(player, tolerance);
+      // return steps[0].playerIsOn(player, tolerance);
+    } else {
+      return false;
+    }
   };
 
   this.move = function() {
