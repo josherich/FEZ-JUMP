@@ -1,5 +1,6 @@
 var Bullet = require('./bullet');
 var Sprite = require('./sprite');
+var TimeMachine = require('./timemachine');
 
 var playerID = 0;
 var bulletFreeze = 300;
@@ -49,6 +50,16 @@ var Player = function(options) {
     return this.el;
   };
 
+  this.timePointer = 0;
+  this.timemachine = new TimeMachine([
+    {name: 'x', val: function(){ return self.x}},
+    {name: 'y', val: function(){ return self.y}},
+    {name: 'vy', val: function(){ return self.vy}},
+    {name: 'vp', val: function(){ return self.vp}}
+  ]);
+
+  this.timeMode = false;
+
   this.sprite = new Sprite('./images/jumplr.png', [
     {
       name: 'right',
@@ -74,6 +85,9 @@ var Player = function(options) {
 
   this.move = function() {
     if (this.dead) return;
+    if (this.timeMode) return;
+
+    this.timemachine.log();
     var steps = window.fez.steps;
     if (this.jump && this.canJump()) {
       this.vy = this.jumpSpeed;
@@ -98,6 +112,10 @@ var Player = function(options) {
     this.x = Math.max(this.x, 0);
     this.x = Math.min(this.x, this.maxp - this.w);
     this.vp *= this.friction;
+    
+    if (Math.abs(this.vp) < 0.01) {
+      this.vp = 0;
+    }
 
     var tolerance = Math.max(-this.vy, 1);
     if (this.vy < 0 && steps.playerIsOnAnyStep(this, tolerance)) {
@@ -127,7 +145,27 @@ var Player = function(options) {
       bullet.move();
     });
 
-  }
+  };
+
+  this.stepForward = function() {
+    this.timeMode = true;
+    var record = this.timemachine.stepForward();
+    if (!record) return;
+    this.x = record.x;
+    this.y = record.y;
+    this.vy = record.vy;
+    this.vp = record.vp;
+  };
+
+  this.stepBack = function() {
+    this.timeMode = true;
+    var record = this.timemachine.stepBack();
+    if (!record) return;
+    this.x = record.x;
+    this.y = record.y;
+    this.vy = record.vy;
+    this.vp = record.vp;
+  };
 
   this.look = function() {
     console.log('p: ', this.p);
@@ -288,6 +326,33 @@ var Player = function(options) {
       bullet.draw();
     });
     // this.updatePerspective();
+  };
+
+  this.drawTimeline = function() {
+    this.removeTimeline();
+    this.timemachine.getTimeline().map(function(record) {
+      drawPlayer(record.x, record.y);
+    });
+    function drawPlayer(x, y) {
+      var el = document.createElement('div');
+      el.className = 'player timeline';
+      el.style.webkitTransform = 'translate(' + x + 'px, -' + y + 'px)';
+      el.style.width = '14px';
+      el.style.height = '21px';
+      el.style.backgroundImage = 'url("./images/jumplr.png")';
+      el.style.backgroundRepeat = 'none';
+      el.style.backgroundPositionX = '155px';
+      el.style.backgroundPositionY = '-21px';
+      el.style.opacity = '0.5';
+      document.querySelector('.box>.left>.inner').appendChild(el);
+    }
+  };
+
+  this.removeTimeline = function() {
+    var els = document.querySelectorAll('.timeline');
+    for (var i = 0; i < els.length; i ++) {
+      els[i].remove();
+    }
   };
 
   this.updatePerspective = function() {

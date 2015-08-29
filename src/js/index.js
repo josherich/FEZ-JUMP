@@ -47,6 +47,9 @@ window.fez.control = {
     window.fez._state.playing = true;
   },
   toggle: function() {
+    window.fez.players[1].timeMode = false;
+    window.fez.players[1].removeTimeline();
+
     window.fez._state.playing = !window.fez._state.playing;
   }
 };
@@ -98,6 +101,21 @@ window.addEventListener('keydown', function(ev) {
   // player2 - / - shoot
   if (ev.keyCode === 191) {
     player2.shoot();
+  }
+
+  // player2 - j - step back
+  if (ev.keyCode == 74) {
+    player2.stepBack();
+  }
+
+  // player2 - k - step forward
+  if (ev.keyCode == 75) {
+    player2.stepForward();
+  }
+
+  // player2 - shift - draw timeline
+  if (ev.keyCode == 16) {
+    player2.drawTimeline();
   }
 
   // rotate right
