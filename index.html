@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="stylesheets/github-light.css">
 
     <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
     <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
     <script type="text/javascript">
       $(document).ready(function () {
@@ -28,7 +28,7 @@
         <span class="ribbon-outer">
           <span class="ribbon-inner">
             <h1>FEZ-X</h1>
-            <h2>Web Gaming Experiments on FEZ</h2>
+            <h2>Web Gaming Experiments</h2>
           </span>
           <span class="left-tail"></span>
           <span class="right-tail"></span>
@@ -46,31 +46,44 @@
 
 
       <section id="main_content">
-        <h3><a id="enter-game" href="./dist/index.html">==ENTER==</a></h3>
+        <h3><a id="enter-game" href="./dist/index.html">== New Game ==</a></h3>
         <h3>
 <a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Physics</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here <a href="https://guides.github.com/features/mastering-markdown/">using GitHub Flavored Markdown</a>, select a template crafted by a designer, and publish. After your page is generated, you can check out the new <code>gh-pages</code> branch locally. If you’re using GitHub for Mac or GitHub for Windows, simply sync your repository and you’ll see the new branch.</p>
+<p>The Basic Physics in a typical 2-dimension action game is quite straight forward. Given the current gravity, friction and acceleration, the position of objects are computed with some basic math.</p>
+<li>Gravity</li>
+<p>The value of Gravity is added to velocity in y-axis each frame.</p>
+<p>vy = vy + gravity</p>
+<li>Friction</li>
+<p>In each frame, the speed in x-axis is multiplied by the value of friction(e.g a percentage of 80%). Such way we can see objects get slow down in a natural way.</p>
+<p>vx = vx * friction</p>
+<li>Acceleration</li>
+<p>Acceleration act the same as gravity, except it's horizontal. Howevr, the easy way is adding an initial speed when objects start to move.</p>
+<p>vx = vx + moveSpeed</p>
 
 <h3>
 <a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Elements of Fun</h3>
 
-<p>We’ve crafted some handsome templates for you to use. Go ahead and click 'Continue to layouts' to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved.</p>
+<p>I created this repository because the idea of making a game using DOM and CSS interested me.</p>
+<p>Initially, it's the rotation view in FEZ that I was testing. Then it occured to me that it seems more like a lab where I can do some experiments on gaming. It brings to me lots of fun implementing some great ideas in popular action game.</p>
 
 <h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating pages manually</h3>
+<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>FEZ rotation</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
-
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor’s GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>I'm not sure if I'm doing the box rotation the right way. The way you created a box in DOM is far from elegant. DOM is definitely not designed for this, but considering the future, I think it's worth trying adding some 3D elements to DOM. Controllable CSS animation is also essential for a better developing experience.</p>
 
 <h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Time Traveling in Braid</h3>
 
-<p>Having trouble with Pages? Check out our <a href="https://help.github.com/pages">documentation</a> or <a href="https://github.com/contact">contact support</a> and we’ll help you sort it out.</p>
+<p>The idea of time traveling in action game, according to Wikipedia, is seen in about 30 games. The specific gameplay includes playing at different points in time simultaneously, traveling throught the time line, cooperating with the past self.</p>
+
+<p>Most of these gameplays are well performed in Braid. The timeline in Braid acts like a stack in data structure, when you hold SHIFT, you are poping the stack of frames, what's happening now is pushing to the stack in each frame. The implementation is easy as I figured this out. The state of each frame, including position and acceleration state, is pushing to timeline stack. When player travels back in time, frames are poped and player is always on the stack top.</p>
+
+<h3>
+<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's Next</h3>
+
+<p>There are lots of gameplay ideas and mechanism I'm about to write in this platform, such as portals, replication in Swapper, 2-dimension shooting, combat and talking in RPG.</p>
+<p>The making of gameplay platform is also on the list. I've also started to read some game engine source to borrow some performance improvements.</p>
       </section>
 
       <footer>
