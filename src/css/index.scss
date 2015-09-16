@@ -92,6 +92,7 @@ $gold: #E4C44A;
   }
   .left {
     transform: rotateY(270deg) translateX(-$diamondD/2);
+    perspective: 3000px;
   }
   .bottom {
     transform: rotateX(270deg) translateY(-$diamondD/2) translateZ($diamondH);
@@ -181,7 +182,9 @@ $gold: #E4C44A;
   position: absolute;
   left: 0;
   bottom: 0;
+  transform-style: preserve-3d;
 }
+
 #player_0:before, #player_1:before {
   content: "";
   width: 100%;

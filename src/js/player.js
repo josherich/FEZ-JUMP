@@ -21,6 +21,7 @@ var Player = function(options) {
   this.el = el;
   this.jumpSpeed = 10;
   this.moveSpeed = 1;
+  this.moveSpeedz = 1;
   this.maxMove = 8;
   this.gravity = -0.6;
   this.bounce = 0.1;
@@ -28,16 +29,21 @@ var Player = function(options) {
   this.jump = false;
   this.w = 14;
   this.bulletType = options.bulletType || 'div';
+
   this.y = this.birth.y;
   this.vy = 0;
-
   this.x = this.birth.x;
   this.vp = 0;
+  this.z = 0;
+  this.vz = 0;
+  
   this.maxp = box.w;
 
   this.dead = false;
   this.left = false;
   this.right = false;
+  this.forward = false;
+  this.backward = false;
   this.facing = 1; // right
   this.score = 0;
 
@@ -100,7 +106,20 @@ var Player = function(options) {
       this.vp -= this.moveSpeed;
       this.vp = Math.max(-this.maxMove, this.vp);
     }
+    
+    // test forward start
+    // if (this.forward) {
+    //   this.vz -= this.moveSpeedz;
+    //   this.vz = Math.max(-this.maxMove, this.vz);
+    // }
+    // if (this.backward) {
+    //   this.vz += this.moveSpeedz;
+    //   this.vz = Math.min(this.maxMove, this.vz);
+    // }
+    // test forward end
+
     this.y += this.vy;
+    // this.z += this.vz;
 
     if (this.y > 0) {
       this.vy += this.gravity;
@@ -112,10 +131,13 @@ var Player = function(options) {
     this.x = Math.max(this.x, 0);
     this.x = Math.min(this.x, this.maxp - this.w);
     this.vp *= this.friction;
-    
+    // this.vz *= this.friction;
     if (Math.abs(this.vp) < 0.01) {
       this.vp = 0;
     }
+    // if (Math.abs(this.vz) < 0.01) {
+    //   this.vz = 0;
+    // }
 
     var tolerance = Math.max(-this.vy, 1);
     if (this.vy < 0 && steps.playerIsOnAnyStep(this, tolerance)) {
@@ -321,7 +343,7 @@ var Player = function(options) {
   };
 
   this.draw = function() {
-    this.el.style.webkitTransform = 'translate(' + this.x + 'px, -' + this.y + 'px)';
+    this.el.style.webkitTransform = 'translate3d(' + this.x + 'px, -' + this.y + 'px, ' + this.z + 'px)';
     this.bullets.map(function(bullet) {
       bullet.draw();
     });
@@ -369,6 +391,14 @@ var Player = function(options) {
     this.right = true;
     this.facing = 1;
   };
+
+  // this.goForward = function() {
+  //   this.forward = true;
+  // };
+
+  // this.goBack = function() {
+  //   this.backward = true;
+  // }
 }
 
 module.exports = Player;
