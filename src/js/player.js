@@ -6,16 +6,19 @@ var playerID = 0;
 var bulletFreeze = 300;
 var timingWin = 3000;
 
-var Player = function(options) {
+var Player = function(game_instance, player_instance, options) {
   var self = this;
   var box = window.fez.box;
-  
+
   var el = document.createElement('div');
   el.className = 'player';
   el.id = 'player_' + playerID;
   document.querySelector('.box>.left>.inner').appendChild(el);
   playerID++;
 
+  this.instance = player_instance;
+  this.game = game_instance;
+  // todo: control player init position
   this.birth = options.birth || {x:0,y:0};
   this.id = options.id;
   this.el = el;
@@ -36,7 +39,7 @@ var Player = function(options) {
   this.vp = 0;
   this.z = 0;
   this.vz = 0;
-  
+
   this.maxp = box.w;
 
   this.dead = false;
@@ -106,7 +109,7 @@ var Player = function(options) {
       this.vp -= this.moveSpeed;
       this.vp = Math.max(-this.maxMove, this.vp);
     }
-    
+
     // test forward start
     // if (this.forward) {
     //   this.vz -= this.moveSpeedz;
@@ -247,7 +250,7 @@ var Player = function(options) {
       this.bullets.push(bullet);
       bullet.shoot();
       self.bulletFreezing = true;
-      setTimeout(function(){ 
+      setTimeout(function(){
         self.bulletFreezing = false;
       }, bulletFreeze);
     }

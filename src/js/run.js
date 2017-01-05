@@ -15,13 +15,18 @@ function run() {
   var players = window.fez.players;
   var steps = window.fez.steps;
   var poop = window.fez.poop;
-  if (window.fez.control.playing()) {
+
+  function client_move() {
+    if (!window.fez.control.playing()) return;
     players.map(function(player) {
       player.move();
     });
     steps.move();
     poop.move();
+  }
 
+  function client_draw() {
+    if (!window.fez.control.playing()) return;
     players.map(function(player) {
       player.draw();
     });
@@ -29,6 +34,17 @@ function run() {
     steps.draw();
     poop.draw();
     updatePerspective();
+  }
+
+  function server_move() {
+
+  }
+
+  if (this.server) {
+    this.server_move();
+  } else {
+    this.client_move();
+    this.client_draw();
   }
 
   requestAnimationFrame(run);

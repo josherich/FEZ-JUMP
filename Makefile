@@ -6,10 +6,10 @@ jsdeps:
 	npm install
 
 bundle.js: jsdeps
-	./node_modules/.bin/browserify -t --igv=window ./src/js/*.js ./src/js/index.js -o dist/app.js
+	./node_modules/.bin/browserify -t --igv=window ./src/js/*.js ./src/js/game.core.js -o dist/app.js
 
 watch: jsdeps
-	./node_modules/.bin/watchify -d -t --igv=window ./src/js/*.js ./src/js/index.js -o dist/app.js
+	./node_modules/.bin/watchify -d -t --igv=window ./src/js/*.js ./src/js/game.core.js -o dist/app.js
 
 watch-style: jsdeps
 	./node_modules/.bin/chokidar './src/css/*.scss' -c 'make style'
