@@ -24,6 +24,7 @@
     "browserify": "^10.0.0",
     "chokidar-cli": "^1.0.1",
     "jquery": "~2.1.1",
+    "node-sass": "^4.1.1",
     "parallelshell": "^2.0.0",
     "underscore": "~1.6.0",
     "watchify": "^3.2.2"

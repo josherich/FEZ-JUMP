@@ -13,10 +13,13 @@ Adjust variables to change the size of the box
   width: 655px;
   margin: 5rem auto; }
 
-#diamond {
+#diamond-frame {
+  display: none; }
+
+#diamond, #diamond-frame {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
+  bottom: 8px;
+  left: 8px;
   width: 15px;
   height: 15px;
   transform-style: preserve-3d;
@@ -24,13 +27,13 @@ Adjust variables to change the size of the box
   transform: rotateY(0deg) rotateX(45deg) rotateZ(45deg);
   animation: spinz 1s linear infinite;
   animation-name: spinz; }
-  #diamond > div {
+  #diamond > div, #diamond-frame > div {
     position: absolute;
     color: rgba(255, 255, 255, 0.2);
     background: rgba(35, 35, 35, 0.75);
     box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.2) inset;
     text-align: center; }
-  #diamond .inner {
+  #diamond .inner, #diamond-frame .inner {
     background-color: #E4C44A;
     border: 1px solid white;
     box-sizing: border-box;
@@ -39,34 +42,41 @@ Adjust variables to change the size of the box
   #diamond .front,
   #diamond .back,
   #diamond .top,
-  #diamond .bottom {
+  #diamond .bottom, #diamond-frame .front,
+  #diamond-frame .back,
+  #diamond-frame .top,
+  #diamond-frame .bottom {
     transform-origin: top center; }
   #diamond .right,
-  #diamond .left {
+  #diamond .left, #diamond-frame .right,
+  #diamond-frame .left {
     transform-origin: top left;
     width: 15px;
     height: 15px; }
   #diamond .front,
-  #diamond .back {
+  #diamond .back, #diamond-frame .front,
+  #diamond-frame .back {
     color: transparent;
     width: 15px;
     height: 15px; }
   #diamond .bottom,
-  #diamond .top {
+  #diamond .top, #diamond-frame .bottom,
+  #diamond-frame .top {
     height: 15px;
     width: 15px; }
-  #diamond .back {
+  #diamond .back, #diamond-frame .back {
     transform: rotateY(180deg) translateZ(7.5px); }
-  #diamond .right {
+  #diamond .right, #diamond-frame .right {
     color: transparent;
     transform: rotateY(90deg) translateZ(15px) translateX(-7.5px); }
-  #diamond .left {
-    transform: rotateY(270deg) translateX(-7.5px); }
-  #diamond .bottom {
+  #diamond .left, #diamond-frame .left {
+    transform: rotateY(270deg) translateX(-7.5px);
+    perspective: 3000px; }
+  #diamond .bottom, #diamond-frame .bottom {
     transform: rotateX(270deg) translateY(-7.5px) translateZ(15px); }
-  #diamond .top {
+  #diamond .top, #diamond-frame .top {
     transform: rotateX(90deg) translateY(-7.5px); }
-  #diamond .front {
+  #diamond .front, #diamond-frame .front {
     transform: translateZ(7.5px); }
 
 .box {
@@ -123,7 +133,8 @@ Adjust variables to change the size of the box
 .player, .bullet {
   position: absolute;
   left: 0;
-  bottom: 0; }
+  bottom: 0;
+  transform-style: preserve-3d; }
 
 #player_0:before, #player_1:before {
   content: "";
