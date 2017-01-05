@@ -305,7 +305,8 @@ var Player = function(options) {
 
   this.win = function() {
     this.score += 1;
-    document.querySelector('#score_' + this.id).textContent = this.score;
+    document.querySelector('#score_' + this.id + ' .score').textContent = this.score;
+    document.querySelector('#score_' + this.id + ' .progress').style.height = (this.timingTill / timingWin * 60) + 'px'
     window.fez.poop.reset();
     this.timingTill = 0;
     this.prevTime = null;
