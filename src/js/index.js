@@ -1,5 +1,3 @@
-window.$ = require('jquery');
-
 var Box = require('./box');
 var Steps = require('./steps');
 var Poop = require('./poop');
@@ -19,3 +17,5 @@ window.fez.steps = new Steps()
 require('./control');
 
 require('./run');
+
+require('../css/index.css');

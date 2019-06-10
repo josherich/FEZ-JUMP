@@ -1,11 +1,11 @@
 {
   "name": "fez-jump",
-  "version": "0.0.1",
-  "description": "jump like fex",
+  "version": "0.0.2",
+  "description": "jump like fez",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": ""
   },
   "repository": {
     "type": "git",
@@ -21,13 +21,14 @@
     "url": "https://github.com/josherich/fezJump/issues"
   },
   "devDependencies": {
-    "browserify": "^10.0.0",
-    "chokidar-cli": "^1.0.1",
-    "jquery": "~2.1.1",
-    "node-sass": "^4.1.1",
-    "parallelshell": "^2.0.0",
-    "underscore": "~1.6.0",
-    "watchify": "^3.2.2"
+    "autoprefixer": "^9.6.0",
+    "css-loader": "^2.1.1",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1"
   },
-  "homepage": "https://github.com/josherich/fezJump"
+  "homepage": "https://github.com/josherich/fezJump",
+  "dependencies": {
+  }
 }

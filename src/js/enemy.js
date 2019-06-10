@@ -7,9 +7,9 @@ function Enemy(step) {
   this.gap = 2;
 
   this.el = document.createElement('div');
-  $(this.el).addClass('bad');
-  $(this.step.face).append(this.el);
-
+  this.el.classList.add('bad');
+  this.step.face.appendChild(this.el);
+z
   this.x = this.step.w - this.size;
   this.x *= Math.random();
   this.x += this.r;

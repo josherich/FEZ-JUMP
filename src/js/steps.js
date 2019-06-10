@@ -4,8 +4,8 @@ function Step(face, x, y, width) {
   this.face = face;
   this.el = document.createElement('div');
   this.el.style.width = width + 'px';
-  $(this.el).addClass('step');
-  $(this.face).append(this.el);
+  this.el.classList.add('step');
+  document.querySelector(this.face).appendChild(this.el);
 
   this.w = width;
   this.h = 10;
