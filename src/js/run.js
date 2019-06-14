@@ -8,7 +8,7 @@ function updatePerspective() {
   players.map(function(player) {
     ym += player.y * 290 / 455 - 130;
   })
-  window.fez.boxEl.style.top = (ym / players.length) + 'px';
+  window.fez.box.dom.style.top = (ym / players.length) + 'px';
 };
 
 function run() {

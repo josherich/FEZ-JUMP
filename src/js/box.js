@@ -1,62 +1,82 @@
-var Box = function() {
-  this.el = window.document.querySelectorAll('.box')[0];
-  this.w = 655;
-  this.h = 455;
-  this.curFace = ".box>.left>.inner";
+var Utils = require('./utils');
+var keyframes = require('./keyframes');
 
-  function convert_rotate(i) {
-    return [0, 3, 2, 1, 4][i];
-  }
-  function transSurface(ifCW, i) {
-    var table_cw = ['', '.box>.left>.inner', '.box>.back>.inner', '.box>.right>.inner', '.box>.front>.inner'];
-    var table_acw = ['', '.box>.right>.inner', '.box>.back>.inner', '.box>.left>.inner', '.box>.front>.inner'];
-    var playerEl = $('.player');
-    var player = window.fez.player;
+var Box = function(width, height) {
 
-    if (ifCW) {
-      $(table_cw[i]).append(playerEl);
-      player.x = 255 - 20;
-      this.curFace = table_cw[i];
-    } else {
-      $(table_acw[i]).append(playerEl);
-      player.x = 0;
-      this.curFace = table_acw[i];
-    }
-  }
+  this.insertBoxDom = function() {
+    var template = document.createElement('template');
+    template.id = 'box';
+    template.innerHTML = this.template.trim();
+    // Utils.dom('body').appendChild(template);
 
-  this.cw = function() {
-    var name = this.el.style.webkitAnimationName;
-    var i;
-    if (name.indexOf('cspin') > -1) {
-      i = parseInt(name.replace('cspin', '')) + 1;
-    } else {
-      i = convert_rotate(parseInt(name.replace('aspin', ''))) + 1;
-    }
-    if (i == 5) {
-      i = 1;
-    }
-    if (i == 0) {
-      i = 4;
-    }
-    this.el.style.webkitAnimationName = 'cspin' + i;
-    transSurface(true, i);
+    var boxDom = document.importNode(template.content, true);
+    // Utils.dom('body').appendChild(boxDom);
+    return boxDom;
   };
 
-  this.acw = function() {
-    var name = this.el.style.webkitAnimationName;
-    var i;
-    if (name.indexOf('aspin') > -1) {
-      i = parseInt(name.replace('aspin', '')) + 1;
-    } else {
-      i = convert_rotate(parseInt(name.replace('cspin', ''))) + 1;
-    }
-    if (i == 5)
-      i = 1;
-    if (i == 0)
-      i = 4;
-    this.el.style.webkitAnimationName = 'aspin' + i;
-    transSurface(false, i);
+  /**
+   * [rotateClockwise description]
+   * @param  {Function} cb [use: cb(currentFace, prevFace)]
+   * @return {[type]}      [description]
+   */
+  this.rotateClockwise = function(cb) {
+    var kf_id = this.keyframes.insertRotate({start: [0, 1, 0, `${this.current_deg}deg`], end: [0, 1, 0, `${this.current_deg-90}deg`]})
+    this.current_deg = this.current_deg-90;
+
+    this.dom.style.webkitAnimationName = kf_id;
+
+    this.rotate_idx = (this.rotate_idx + 1) % 4;
+    this.currentFaceName = this.rotate_face_idx[this.rotate_idx]
+
+    var prevFace = this.currentFace;
+    var currentFace = Utils.dom(this.dom, `.box > .${this.currentFaceName} > .inner`);
+    cb && cb(currentFace, prevFace);
+    this.currentFace = currentFace;
+
   };
+
+  /**
+   * [rotateAClockwise description]
+   * @param  {Function} cb [use: cb(currentFace, prevFace)]
+   * @return {[type]}      [description]
+   */
+  this.rotateAClockwise = function(cb) {
+    var kf_id = this.keyframes.insertRotate({start: [0, 1, 0, `${this.current_deg}deg`], end: [0, 1, 0, `${this.current_deg+90}deg`]})
+    this.current_deg = this.current_deg+90;
+
+    this.dom.style.webkitAnimationName = kf_id;
+
+    this.rotate_idx = (this.rotate_idx - 1 < 0 ? 3 : this.rotate_idx - 1) % 4
+    this.currentFaceName = this.rotate_face_idx[this.rotate_idx]
+
+    var prevFace = this.currentFace;
+    var currentFace = Utils.dom(this.dom, `.box > .${this.currentFaceName} > .inner`);
+    cb && cb(currentFace, prevFace);
+    this.currentFace = currentFace;
+  };
+
+  this.w = width;
+  this.h = height;
+  this.template = `
+      <div class="box">
+        <div class="front"><div class="inner"></div></div>
+        <div class="back"><div class="inner"></div></div>
+        <div class="top"><div class="inner"></div></div>
+        <div class="bottom"><div class="inner"></div></div>
+        <div class="left"><div class="inner"></div></div>
+        <div class="right"><div class="inner"></div></div>
+      </div>
+  `
+  this.face_idx = ['left', 'back', 'right', 'front', 'top', 'bottom'];
+  this.rotate_face_idx = ['front', 'right', 'back', 'left'];
+  
+  this.el = this.insertBoxDom();
+  this.dom = this.el;
+  this.currentFaceName = 'front';
+  this.currentFace = Utils.dom(this.dom, `.${this.currentFaceName} > .inner`);
+  this.rotate_idx = 0;
+  this.current_deg = 0;
+  this.keyframes = keyframes;
 };
 
 module.exports = Box;

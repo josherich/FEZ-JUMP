@@ -1,5 +1,6 @@
-var Bullet = require('./bullet');
-var Sprite = require('./sprite');
+var Bullet      = require('./bullet');
+var Sprite      = require('./sprite');
+var Utils       = require('./utils');
 var TimeMachine = require('./timemachine');
 
 var playerID = 0;
@@ -13,7 +14,7 @@ var Player = function(options) {
   var el = document.createElement('div');
   el.className = 'player';
   el.id = 'player_' + playerID;
-  document.querySelector('.box>.left>.inner').appendChild(el);
+  Utils.dom(box.dom, `.box > .${box.currentFaceName} > .inner`).appendChild(el);
   playerID++;
 
   this.birth = options.birth || {x:0,y:0};
@@ -306,7 +307,7 @@ var Player = function(options) {
   this.win = function() {
     this.score += 1;
     document.querySelector('#score_' + this.id + ' .score').textContent = this.score;
-    document.querySelector('#score_' + this.id + ' .progress').style.height = (this.timingTill / timingWin * 60) + 'px'
+    // document.querySelector('#score_' + this.id + ' .progress').style.height = (this.timingTill / timingWin * 60) + 'px'
     window.fez.poop.reset();
     this.timingTill = 0;
     this.prevTime = null;
@@ -380,7 +381,7 @@ var Player = function(options) {
 
   this.updatePerspective = function() {
     var y = this.y * 290 / 455 - 130;
-    window.fez.boxEl.style.top = y + 'px';
+    window.fez.box.dom.style.top = y + 'px';
   };
 
   this.turnLeft = function() {

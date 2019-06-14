@@ -1,11 +1,14 @@
 var Enemy = require('./enemy');
+var Utils = require('./utils');
 
 function Step(face, x, y, width) {
+  var box = window.fez.box;
+
   this.face = face;
   this.el = document.createElement('div');
   this.el.style.width = width + 'px';
   this.el.classList.add('step');
-  document.querySelector(this.face).appendChild(this.el);
+  Utils.dom(box.dom, `.box > .${face} > .inner`).appendChild(this.el);
 
   this.w = width;
   this.h = 10;
@@ -55,17 +58,29 @@ function Step(face, x, y, width) {
 };
 
 function Steps() {
+  var box = window.fez.box;
+  
   var lx = 120,
       ly = 30,
       x0 = 325,
       y0 = 0;
-  this.steps = {'.box>.left>.inner':[], '.box>.back>.inner':[], '.box>.right>.inner':[], '.box>.front>.inner':[]};
+  this.steps = {'left':[], 'back':[], 'right':[], 'front':[]};
   this.x = 0;
   this.y = 0;
-  var box = window.fez.box;
+
+  this.reset = function() {
+    lx = 120;
+    ly = 30;
+    x0 = 325;
+    y0 = 0;
+    this.x = 0;
+    this.y = 0;
+  }
 
   this.addNeeded = function(face) {
+    // console.log(face, this.y)
     if (this.y > (box.h - 21)) {
+      this.reset();
       return;
     }
     var randX = Math.random() * lx * 2 - lx;
@@ -86,22 +101,9 @@ function Steps() {
     this.addNeeded(face);
   };
 
-  this.init = function() {
-    var i = 5;
-    while (i--) {
-      this.steps.push(new Step('.box>.left>.inner'));
-    }
-  };
-
-  var faceTable = ['.box>.left>.inner', '.box>.back>.inner', '.box>.right>.inner', '.box>.front>.inner'];
-
-  for (var i in faceTable) {
-    this.addNeeded(faceTable[i]);
-  }
-
   this.playerIsOnAnyStep = function(player, tolerance) {
     tolerance = tolerance || 1;
-    var steps = this.steps[box.curFace];
+    var steps = this.steps[box.currentFaceName];
     for (var i = 0; i < steps.length; i++) {
       if (steps[i].playerIsOn(player, tolerance)) {
         return true;
@@ -112,7 +114,7 @@ function Steps() {
 
   this.playerIsOnTopStep = function(player, tolerance) {
     tolerance = tolerance || 1;
-    var steps = this.steps[box.curFace];
+    var steps = this.steps[box.currentFaceName];
     if (steps.length > 0) {
       return steps[steps.length - 1].playerIsOn(player, tolerance);
       // return steps[0].playerIsOn(player, tolerance);
@@ -122,18 +124,24 @@ function Steps() {
   };
 
   this.move = function() {
-    var steps = this.steps[box.curFace];
+    var steps = this.steps[box.currentFaceName];
     for (var i = 0; i < steps.length; i++) {
       steps[i].move();
     }
   };
 
   this.draw = function() {
-    var steps = this.steps[box.curFace];
+    var steps = this.steps[box.currentFaceName];
     for (var i = 0; i < steps.length; i++) {
       steps[i].draw();
     }
   };
+
+  var faceTable = ['left', 'back', 'right', 'front'];
+
+  for (var i in faceTable) {
+    this.addNeeded(faceTable[i]);
+  }
 
 };
 

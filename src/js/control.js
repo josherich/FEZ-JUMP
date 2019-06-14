@@ -28,6 +28,7 @@ window.addEventListener('keydown', function(ev) {
   var player1 = window.fez.players[0];
   var player2 = window.fez.players[1];
   var box = window.fez.box;
+  var diamond = window.fez.diamond;
 
   // player1 - a - left
   if (ev.keyCode == 65 && !running) {
@@ -97,21 +98,29 @@ window.addEventListener('keydown', function(ev) {
     player2.drawTimeline();
   }
 
-  // rotate right
+  // , rotate clockwise
   if (ev.keyCode === 188 && !running) {
     running = true;
     setTimeout(function(){
       running = false;
     }, 900);
-    box.acw();
+    box.rotateClockwise(function(currentFace, prevFace) {
+      currentFace.appendChild(player1.el);
+      currentFace.appendChild(player2.el);
+      currentFace.appendChild(diamond.dom);
+    });
   }
-  // rotate left 
+  // . rotate anti-clockwise 
   if (ev.keyCode === 190 && !running) {
     running = true;
     setTimeout(function(){
       running = false;
     }, 900);
-    box.cw()
+    box.rotateAClockwise(function(currentFace, prevFace) {
+      currentFace.appendChild(player1.el);
+      currentFace.appendChild(player2.el);
+      currentFace.appendChild(diamond.dom);
+    })
   }
 
   // world - space - toggle play/pause

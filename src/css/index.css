@@ -173,9 +173,14 @@ Adjust variables to change the size of the box
   height: 8px;
   border: 2px solid white; }
 
-.score-board div {
+.score-board {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+}
+.score-board > div {
   color: blue;
-  font-size: 48px;
+  font-size: 32px;
   width: 50%;
   float: left;
   text-align: center; }
@@ -183,56 +188,8 @@ Adjust variables to change the size of the box
 .score-board div:first-of-type {
   color: red; }
 
-@-webkit-keyframes spinz {
+@keyframes spinz {
   from {
     transform: rotateY(0deg) rotateX(45deg) rotateZ(45deg); }
   to {
     transform: rotateY(360deg) rotateX(45deg) rotateZ(45deg); } }
-
-@-webkit-keyframes cspin1 {
-  from {
-    transform: rotateY(0); }
-  to {
-    transform: rotateY(90deg); } }
-
-@-webkit-keyframes cspin2 {
-  from {
-    transform: rotateY(90deg); }
-  to {
-    transform: rotateY(180deg); } }
-
-@-webkit-keyframes cspin3 {
-  from {
-    transform: rotateY(180deg); }
-  to {
-    transform: rotateY(270deg); } }
-
-@-webkit-keyframes cspin4 {
-  from {
-    transform: rotateY(270deg); }
-  to {
-    transform: rotateY(360deg); } }
-
-@-webkit-keyframes aspin1 {
-  from {
-    transform: rotateY(0); }
-  to {
-    transform: rotateY(-90deg); } }
-
-@-webkit-keyframes aspin2 {
-  from {
-    transform: rotateY(-90deg); }
-  to {
-    transform: rotateY(-180deg); } }
-
-@-webkit-keyframes aspin3 {
-  from {
-    transform: rotateY(-180deg); }
-  to {
-    transform: rotateY(-270deg); } }
-
-@-webkit-keyframes aspin4 {
-  from {
-    transform: rotateY(-270deg); }
-  to {
-    transform: rotateY(-360deg); } }

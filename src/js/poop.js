@@ -12,7 +12,7 @@ var Poop = function() {
   this.carried = false;
 
   this.buildElement = function() {
-    var el = document.querySelector('#diamond');
+    var el = document.querySelector('.box #diamond');
     this.el = el;
   };
 
