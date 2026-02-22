@@ -6,7 +6,9 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'window'
+    library: {
+      type: 'window'
+    }
   },
   mode: 'production',
   optimization: {
