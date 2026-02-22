@@ -1,11 +1,13 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './src/js/index.js',
   context: path.resolve(__dirname),
   output: {
-    filename: 'main.js',
+    filename: 'main.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
+    clean: true,
     library: {
       type: 'window'
     }
@@ -14,6 +16,12 @@ module.exports = {
   optimization: {
     minimize: true
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      inject: 'body',
+    }),
+  ],
   module: {
     rules: [
       {

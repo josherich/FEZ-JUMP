@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "",
-    "build": "cp src/index.html dist/index.html && webpack",
+    "build": "webpack",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "repository": {
@@ -26,6 +26,7 @@
     "autoprefixer": "^10.4.19",
     "css-loader": "^7.1.2",
     "gh-pages": "^6.0.0",
+    "html-webpack-plugin": "^5.6.6",
     "postcss-loader": "^8.1.1",
     "sass": "^1.77.8",
     "sass-loader": "^14.2.1",
@@ -33,7 +34,5 @@
     "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4"
   },
-  "homepage": "https://josherich.github.io/fezJump",
-  "dependencies": {
-  }
+  "homepage": "https://josherich.github.io/fezJump"
 }
