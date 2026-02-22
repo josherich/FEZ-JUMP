@@ -1,105 +1,69 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=640">
+<head>
+  <title>FEZ-JUMP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!-- <link rel="stylesheet" type="text/css" href="index.css"> -->
+</head>
+<body>
 
-    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
-    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
+  <template id="box">
+    <div class="front"><div class="inner"></div></div>
+    <div class="back"><div class="inner"></div></div>
+    <div class="top"><div class="inner"></div></div>
+    <div class="bottom"><div class="inner"></div></div>
+    <div class="left"><div class="inner"></div></div>
+    <div class="right"><div class="inner"></div></div>
+  </template>
 
-    <script type="text/javascript" src="javascripts/modernizr.js"></script>
-    <script type="text/javascript" src="javascripts/jquery.min.js"></script>
-    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
-    <script type="text/javascript">
-      $(document).ready(function () {
-        $('#main_content').headsmart()
-      })
-    </script>
-    <title>FEZ-X by josherich</title>
-  </head>
+  <template id="diamond">
+    <div id="diamond">
+      <div class="front"><div class="inner"></div></div>
+      <div class="back"><div class="inner"></div></div>
+      <div class="top"><div class="inner"></div></div>
+      <div class="bottom"><div class="inner"></div></div>
+      <div class="left"><div class="inner"></div></div>
+      <div class="right"><div class="inner"></div></div>
+    </div>
+  </template>
+  
+  <div class="score-board">
 
-  <body>
-    <a id="forkme_banner" href="https://github.com/josherich/fezJump">View on GitHub</a>
-    <div class="shell">
-
-      <header>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <h1>FEZ-X</h1>
-            <h2>Web Gaming Experiments</h2>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-      </header>
-
-      <section id="downloads">
-        <span class="inner">
-          <a href="https://github.com/josherich/fezJump/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/josherich/fezJump/tarball/master" class="tgz"><em>download</em> .TGZ</a>
-        </span>
-      </section>
-
-
-      <span class="banner-fix"></span>
-
-
-      <section id="main_content">
-        <h3><a id="enter-game" href="./dist/index.html">== New Game ==</a></h3>
-        <h3>
-<a id="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages" aria-hidden="true"><span class="octicon octicon-link"></span></a>Basic Physics</h3>
-
-<p>The Basic Physics in a typical 2-dimension action game is quite straight forward. Given the current gravity, friction and acceleration, the position of objects are computed with some basic math.</p>
-<li>Gravity</li>
-<p>The value of Gravity is added to velocity in y-axis each frame.</p>
-<p>vy = vy + gravity</p>
-<li>Friction</li>
-<p>In each frame, the speed in x-axis is multiplied by the value of friction(e.g a percentage of 80%). Such way we can see objects get slow down in a natural way.</p>
-<p>vx = vx * friction</p>
-<li>Acceleration</li>
-<p>Acceleration act the same as gravity, except it's horizontal. Howevr, the easy way is adding an initial speed when objects start to move.</p>
-<p>vx = vx + moveSpeed</p>
-
-<h3>
-<a id="designer-templates" class="anchor" href="#designer-templates" aria-hidden="true"><span class="octicon octicon-link"></span></a>Elements of Fun</h3>
-
-<p>I created this repository because the idea of making a game using DOM and CSS interested me.</p>
-<p>Initially, it's the rotation view in FEZ that I was testing. Then it occured to me that it seems more like a lab where I can do some experiments on gaming. It brings to me lots of fun implementing some great ideas in popular action game.</p>
-
-<h3>
-<a id="creating-pages-manually" class="anchor" href="#creating-pages-manually" aria-hidden="true"><span class="octicon octicon-link"></span></a>FEZ rotation</h3>
-
-<p>I'm not sure if I'm doing the box rotation the right way. The way you created a box in DOM is far from elegant. DOM is definitely not designed for this, but considering the future, I think it's worth trying adding some 3D elements to DOM. Controllable CSS animation is also essential for a better developing experience.</p>
-
-<h3>
-<a id="authors-and-contributors" class="anchor" href="#authors-and-contributors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Time Traveling in Braid</h3>
-
-<p>The idea of time traveling in action game, according to Wikipedia, is seen in about 30 games. The specific gameplay includes playing at different points in time simultaneously, traveling throught the time line, cooperating with the past self.</p>
-
-<p>Most of these gameplays are well performed in Braid. The timeline in Braid acts like a stack in data structure, when you hold SHIFT, you are poping the stack of frames, what's happening now is pushing to the stack in each frame. The implementation is easy as I figured this out. The state of each frame, including position and acceleration state, is pushing to timeline stack. When player travels back in time, frames are poped and player is always on the stack top.</p>
-
-<h3>
-<a id="support-or-contact" class="anchor" href="#support-or-contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>What's Next</h3>
-
-<p>There are lots of gameplay ideas and mechanism I want to write and play with in this platform, such as portals, replication in Swapper, 2-dimension shooting, combat and talking in RPG.</p>
-<p>The making of gameplay platform is also on the list. I've also started to read some game engine source to borrow some performance improvements.</p>
-      </section>
-
-      <footer>
-        <span class="ribbon-outer">
-          <span class="ribbon-inner">
-            <p>this project by <a href="https://github.com/josherich">josherich</a> can be found on <a href="https://github.com/josherich/fezJump">GitHub</a></p>
-          </span>
-          <span class="left-tail"></span>
-          <span class="right-tail"></span>
-        </span>
-        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
-        <span class="octocat"></span>
-      </footer>
-
+    <div id="score_1">
+      <div class="score">0</div>
+    </div>
+    <div id="score_2">
+      <div class="score">0</div>
     </div>
 
-    
-  </body>
+  </div>
+
+  <div class="wrap">
+
+  </div>
+
+  <div class="state">
+    <!-- <button id="playing">||</button> -->
+  </div>
+  
+  <div class="player1"></div>
+
+  <div class="touch-controls" id="touch-controls">
+    <div class="touch-group touch-group-left">
+      <button class="touch-btn" id="touch-left">&#9664;</button>
+      <button class="touch-btn" id="touch-right">&#9654;</button>
+    </div>
+    <div class="touch-group touch-group-center">
+      <button class="touch-btn touch-btn-sm" id="touch-rotate-ccw">&#8634;</button>
+      <button class="touch-btn touch-btn-sm" id="touch-rotate-cw">&#8635;</button>
+    </div>
+    <div class="touch-group touch-group-right">
+      <button class="touch-btn touch-btn-jump" id="touch-jump">&#9650;</button>
+      <button class="touch-btn touch-btn-shoot" id="touch-shoot">&#9679;</button>
+    </div>
+  </div>
+
+  <script src="main.js" type="text/javascript"></script>
+
+</body>
 </html>
