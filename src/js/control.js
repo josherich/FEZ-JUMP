@@ -169,3 +169,91 @@ window.addEventListener('keyup', function(ev) {
   // }
   // console.log(box.curFace);
 }, false);
+
+/// Mobile scaling: fit game to viewport width
+function scaleGame() {
+  var wrap = document.querySelector('.wrap');
+  if (!wrap) return;
+  var gameWidth = 655;
+  var scale = Math.min(window.innerWidth / gameWidth, 1);
+  if (scale < 1) {
+    wrap.style.transform = 'scale(' + scale + ')';
+    wrap.style.transformOrigin = 'center center';
+  } else {
+    wrap.style.transform = '';
+    wrap.style.transformOrigin = '';
+  }
+}
+
+window.addEventListener('resize', scaleGame);
+scaleGame();
+
+// Touch control button bindings
+function bindTouchBtn(id, onStart, onEnd) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('touchstart', function(e) {
+    e.preventDefault();
+    onStart();
+  }, { passive: false });
+  if (onEnd) {
+    el.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      onEnd();
+    }, { passive: false });
+    el.addEventListener('touchcancel', function(e) {
+      e.preventDefault();
+      onEnd();
+    }, { passive: false });
+  }
+}
+
+bindTouchBtn('touch-left',
+  function() { window.fez.players[0].turnLeft(); },
+  function() { window.fez.players[0].left = false; }
+);
+
+bindTouchBtn('touch-right',
+  function() { window.fez.players[0].turnRight(); },
+  function() { window.fez.players[0].right = false; }
+);
+
+bindTouchBtn('touch-jump',
+  function() { window.fez.players[0].jump = true; },
+  function() { window.fez.players[0].jump = false; }
+);
+
+bindTouchBtn('touch-shoot',
+  function() { window.fez.players[0].shoot(); },
+  null
+);
+
+bindTouchBtn('touch-rotate-cw', function() {
+  if (running) return;
+  var player1 = window.fez.players[0];
+  var player2 = window.fez.players[1];
+  var box = window.fez.box;
+  var diamond = window.fez.diamond;
+  running = true;
+  setTimeout(function() { running = false; }, 900);
+  box.rotateClockwise(function(currentFace) {
+    currentFace.appendChild(player1.el);
+    currentFace.appendChild(player2.el);
+    currentFace.appendChild(diamond.dom);
+  });
+}, null);
+
+bindTouchBtn('touch-rotate-ccw', function() {
+  if (running) return;
+  var player1 = window.fez.players[0];
+  var player2 = window.fez.players[1];
+  var box = window.fez.box;
+  var diamond = window.fez.diamond;
+  running = true;
+  setTimeout(function() { running = false; }, 900);
+  box.rotateAClockwise(function(currentFace) {
+    currentFace.appendChild(player1.el);
+    currentFace.appendChild(player2.el);
+    currentFace.appendChild(diamond.dom);
+  });
+}, null);

@@ -1,17 +1,31 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/js/index.js',
   context: path.resolve(__dirname),
   output: {
-    filename: 'main.js',
+    filename: 'main.[contenthash].js',
     path: path.resolve(__dirname, 'dist'),
-    libraryTarget: 'window'
+    clean: true,
+    library: {
+      type: 'window'
+    }
   },
   mode: 'production',
   optimization: {
     minimize: true
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      inject: 'body',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'src/images', to: 'images' }],
+    }),
+  ],
   module: {
     rules: [
       {
