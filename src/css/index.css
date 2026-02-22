@@ -1,5 +1,15 @@
+html {
+  height: 100%;
+}
+
 body {
-  background: #232323; }
+  background: #232323;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
 .hidden {
   display: none; }
@@ -11,7 +21,10 @@ Adjust variables to change the size of the box
   perspective: 3000px;
   perspective-origin: 50% 50% 0;
   width: 655px;
-  margin: 5rem auto; }
+  height: 455px;
+  margin: 0;
+  flex-shrink: 0;
+}
 
 #diamond-frame {
   display: none; }
@@ -267,15 +280,16 @@ Adjust variables to change the size of the box
     touch-action: none;
   }
 
+  body {
+    /* shift center up to account for the fixed touch-controls bar (~100px) */
+    padding-bottom: 100px;
+  }
+
   .touch-controls {
     display: flex;
   }
 
   .score-board div {
     font-size: 28px;
-  }
-
-  .wrap {
-    margin-top: 0;
   }
 }

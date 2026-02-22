@@ -170,23 +170,18 @@ window.addEventListener('keyup', function(ev) {
   // console.log(box.curFace);
 }, false);
 
-// Mobile scaling: fit game to viewport width
+/// Mobile scaling: fit game to viewport width
 function scaleGame() {
   var wrap = document.querySelector('.wrap');
   if (!wrap) return;
   var gameWidth = 655;
-  var gameHeight = 455;
   var scale = Math.min(window.innerWidth / gameWidth, 1);
   if (scale < 1) {
     wrap.style.transform = 'scale(' + scale + ')';
-    wrap.style.transformOrigin = 'top center';
-    wrap.style.marginTop = '0';
-    wrap.style.marginBottom = (gameHeight * scale - gameHeight) + 'px';
+    wrap.style.transformOrigin = 'center center';
   } else {
     wrap.style.transform = '';
     wrap.style.transformOrigin = '';
-    wrap.style.marginTop = '';
-    wrap.style.marginBottom = '';
   }
 }
 
