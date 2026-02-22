@@ -193,3 +193,89 @@ Adjust variables to change the size of the box
     transform: rotateY(0deg) rotateX(45deg) rotateZ(45deg); }
   to {
     transform: rotateY(360deg) rotateX(45deg) rotateZ(45deg); } }
+
+/* Mobile / Touch Controls */
+.touch-controls {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.touch-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.touch-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-appearance: none;
+  appearance: none;
+  padding: 0;
+}
+
+.touch-btn.touch-btn-sm {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  background: rgba(255, 220, 0, 0.15);
+  border-color: rgba(255, 220, 0, 0.4);
+}
+
+.touch-btn.touch-btn-jump {
+  width: 68px;
+  height: 68px;
+  background: rgba(0, 200, 0, 0.2);
+  border-color: rgba(0, 200, 0, 0.5);
+}
+
+.touch-btn.touch-btn-shoot {
+  background: rgba(220, 0, 0, 0.2);
+  border-color: rgba(220, 0, 0, 0.5);
+}
+
+@media (max-width: 700px), (hover: none) and (pointer: coarse) {
+  html, body {
+    overflow: hidden;
+    height: 100%;
+    touch-action: none;
+  }
+
+  .touch-controls {
+    display: flex;
+  }
+
+  .score-board div {
+    font-size: 28px;
+  }
+
+  .wrap {
+    margin-top: 0;
+  }
+}
