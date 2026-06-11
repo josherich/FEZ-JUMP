@@ -5,6 +5,7 @@ var TimeMachine = require('./timemachine');
 
 var playerID = 0;
 var bulletFreeze = 300;
+var jumpFreeze = 200;
 var timingWin = 3000;
 
 var Player = function(options) {
@@ -28,6 +29,7 @@ var Player = function(options) {
   this.bounce = 0.1;
   this.friction = 0.78;
   this.jump = false;
+  this.jumpFreezing = false;
   this.w = 14;
   this.bulletType = options.bulletType || 'div';
 
@@ -96,8 +98,12 @@ var Player = function(options) {
 
     this.timemachine.log();
     var steps = window.fez.steps;
-    if (this.jump && this.canJump()) {
+    if (this.jump && this.canJump() && !this.jumpFreezing) {
       this.vy = this.jumpSpeed;
+      this.jumpFreezing = true;
+      setTimeout(function() {
+        self.jumpFreezing = false;
+      }, jumpFreeze);
     }
     if (this.right) {
       this.vp += this.moveSpeed;
@@ -299,6 +305,7 @@ var Player = function(options) {
 
   this.restore = function() {
     this.dead = false;
+    this.jumpFreezing = false;
     this.x = this.birth.x;
     this.y = this.birth.y;
     el.style.display = 'block';
