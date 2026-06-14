@@ -28,7 +28,7 @@ var Keyframes = function() {
     document.head.appendChild(style);
 
     for (var i = 0; i < document.styleSheets.length; i++) {
-      if (document.styleSheets[i].title = this.tag_id)
+      if (document.styleSheets[i].title === this.tag_id)
         return document.styleSheets[i];
     }
   };
@@ -44,4 +44,4 @@ var Keyframes = function() {
   
 }
 
-module.exports = new Keyframes();
+export default new Keyframes();

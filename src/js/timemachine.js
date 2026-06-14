@@ -52,4 +52,4 @@ var TimeMachine = function(getters) {
   }
 };
 
-module.exports = TimeMachine;
+export default TimeMachine;

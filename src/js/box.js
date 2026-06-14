@@ -1,5 +1,5 @@
-var Utils = require('./utils');
-var keyframes = require('./keyframes');
+import Utils from './utils.js';
+import keyframes from './keyframes.js';
 
 var Box = function(width, height) {
 
@@ -79,4 +79,4 @@ var Box = function(width, height) {
   this.keyframes = keyframes;
 };
 
-module.exports = Box;
+export default Box;

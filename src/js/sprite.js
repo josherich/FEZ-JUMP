@@ -63,4 +63,4 @@ function pixelize(value) {
   return value + 'px';
 }
 
-module.exports = Sprite;
+export default Sprite;

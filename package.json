@@ -2,13 +2,7 @@
   "name": "fez-jump",
   "version": "0.0.2",
   "description": "jump like fez",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "",
-    "build": "webpack",
-    "deploy": "npm run build && gh-pages -d dist"
-  },
+  "main": "src/index.html",
   "repository": {
     "type": "git",
     "url": "https://github.com/josherich/fezJump"
@@ -21,19 +15,6 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/josherich/fezJump/issues"
-  },
-  "devDependencies": {
-    "autoprefixer": "^10.4.19",
-    "copy-webpack-plugin": "^13.0.1",
-    "css-loader": "^7.1.2",
-    "gh-pages": "^6.0.0",
-    "html-webpack-plugin": "^5.6.6",
-    "postcss-loader": "^8.1.1",
-    "sass": "^1.77.8",
-    "sass-loader": "^14.2.1",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.94.0",
-    "webpack-cli": "^5.1.4"
   },
   "homepage": "https://josherich.github.io/fezJump"
 }

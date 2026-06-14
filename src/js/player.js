@@ -1,7 +1,7 @@
-var Bullet      = require('./bullet');
-var Sprite      = require('./sprite');
-var Utils       = require('./utils');
-var TimeMachine = require('./timemachine');
+import Bullet from './bullet.js';
+import Sprite from './sprite.js';
+import Utils from './utils.js';
+import TimeMachine from './timemachine.js';
 
 var playerID = 0;
 var bulletFreeze = 300;
@@ -410,4 +410,4 @@ var Player = function(options) {
   // }
 }
 
-module.exports = Player;
+export default Player;

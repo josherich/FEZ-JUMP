@@ -1,9 +1,8 @@
-var Box   = require('./box');
-var Steps = require('./steps');
-var Poop  = require('./poop');
-var Diamond = require('./diamond');
-
-var Utils = require('./utils');
+import Box from './box.js';
+import Steps from './steps.js';
+import Poop from './poop.js';
+import Diamond from './diamond.js';
+import Utils from './utils.js';
 
 window.fez = {};
 
@@ -24,10 +23,6 @@ window.fez.diamond.dom = diamondDom;
 window.fez.poop = new Poop();
 window.fez.steps = new Steps()
 
-require('./players'); 
-
-require('./control');
-
-require('./run');
-
-require('../css/index.css');
+await import('./players.js');
+await import('./control.js');
+await import('./run.js');

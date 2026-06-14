@@ -1,4 +1,4 @@
-function Enemy(step) {
+export default function Enemy(step) {
   this.size = 20;
   this.r = this.size / 2;
 
@@ -9,7 +9,7 @@ function Enemy(step) {
   this.el = document.createElement('div');
   this.el.classList.add('bad');
   this.step.face.appendChild(this.el);
-z
+
   this.x = this.step.w - this.size;
   this.x *= Math.random();
   this.x += this.r;
@@ -61,5 +61,3 @@ z
     this.el.style.webkitTransform = 'translate(' + x + 'px, -' + y + 'px)';
   }
 }
-
-module.exports = Enemy;

@@ -63,4 +63,4 @@ var Poop = function() {
   this.buildElement();
 };
 
-module.exports = Poop;
+export default Poop;

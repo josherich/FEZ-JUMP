@@ -1,5 +1,5 @@
-var Enemy = require('./enemy');
-var Utils = require('./utils');
+import Enemy from './enemy.js';
+import Utils from './utils.js';
 
 function Step(face, x, y, width) {
   var box = window.fez.box;
@@ -145,4 +145,4 @@ function Steps() {
 
 };
 
-module.exports = Steps;
+export default Steps;

@@ -1,4 +1,4 @@
-var Player = require('./player');
+import Player from './player.js';
 window.fez.players = [];
 window.fez.players.push(new Player({
   id: 1,

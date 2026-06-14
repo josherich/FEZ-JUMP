@@ -1,4 +1,4 @@
-var Sprite = require('./sprite');
+import Sprite from './sprite.js';
 
 var Bullet = function(player, options) {
   var self = this;
@@ -91,4 +91,4 @@ var Bullet = function(player, options) {
   }
 }
 
-module.exports = Bullet;
+export default Bullet;

@@ -1,4 +1,4 @@
-var Utils = require('./utils');
+import Utils from './utils.js';
 
 var Diamond = function() {
 
@@ -27,4 +27,4 @@ var Diamond = function() {
   this.dom = this.el;
 }
 
-module.exports = Diamond;
+export default Diamond;
