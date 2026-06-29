@@ -7,6 +7,10 @@ var playerID = 0;
 var bulletFreeze = 300;
 var jumpFreeze = 200;
 var timingWin = 3000;
+var dashFreeze = 500;
+var dashDuration = 8;
+var dashSpeed = 16;
+var doubleTapWindow = 300;
 
 var Player = function(options) {
   var self = this;
@@ -30,6 +34,13 @@ var Player = function(options) {
   this.friction = 0.78;
   this.jump = false;
   this.jumpFreezing = false;
+  this.jumpsUsed = 0;
+  this.isDashing = false;
+  this.dashDirection = 0;
+  this.dashFramesRemaining = 0;
+  this.dashFreezing = false;
+  this.lastLeftPress = 0;
+  this.lastRightPress = 0;
   this.w = 14;
   this.bulletType = options.bulletType || 'div';
 
@@ -99,19 +110,24 @@ var Player = function(options) {
     this.timemachine.log();
     var steps = window.fez.steps;
     if (this.jump && this.canJump() && !this.jumpFreezing) {
-      this.vy = this.jumpSpeed;
-      this.jumpFreezing = true;
-      setTimeout(function() {
-        self.jumpFreezing = false;
-      }, jumpFreeze);
+      this.performJump();
     }
-    if (this.right) {
-      this.vp += this.moveSpeed;
-      this.vp = Math.min(this.maxMove, this.vp);
-    }
-    if (this.left) {
-      this.vp -= this.moveSpeed;
-      this.vp = Math.max(-this.maxMove, this.vp);
+
+    if (this.isDashing) {
+      this.vp = this.dashDirection * dashSpeed;
+      this.dashFramesRemaining--;
+      if (this.dashFramesRemaining <= 0) {
+        this.isDashing = false;
+      }
+    } else {
+      if (this.right) {
+        this.vp += this.moveSpeed;
+        this.vp = Math.min(this.maxMove, this.vp);
+      }
+      if (this.left) {
+        this.vp -= this.moveSpeed;
+        this.vp = Math.max(-this.maxMove, this.vp);
+      }
     }
     
     // test forward start
@@ -133,11 +149,14 @@ var Player = function(options) {
     } else {
       this.vy = 0;
       this.y = 0;
+      this.jumpsUsed = 0;
     }
     this.x += this.vp;
     this.x = Math.max(this.x, 0);
     this.x = Math.min(this.x, this.maxp - this.w);
-    this.vp *= this.friction;
+    if (!this.isDashing) {
+      this.vp *= this.friction;
+    }
     // this.vz *= this.friction;
     if (Math.abs(this.vp) < 0.01) {
       this.vp = 0;
@@ -149,6 +168,10 @@ var Player = function(options) {
     var tolerance = Math.max(-this.vy, 1);
     if (this.vy < 0 && steps.playerIsOnAnyStep(this, tolerance)) {
       this.vy = this.bounce * -this.vy;
+    }
+
+    if (this.isGrounded()) {
+      this.jumpsUsed = 0;
     }
 
     if (steps.playerIsOnTopStep(this, tolerance) && this.carrying()) {
@@ -306,6 +329,9 @@ var Player = function(options) {
   this.restore = function() {
     this.dead = false;
     this.jumpFreezing = false;
+    this.jumpsUsed = 0;
+    this.isDashing = false;
+    this.dashFreezing = false;
     this.x = this.birth.x;
     this.y = this.birth.y;
     el.style.display = 'block';
@@ -346,9 +372,85 @@ var Player = function(options) {
   };
 
   this.canJump = function() {
+    return this.isGrounded();
+  };
+
+  this.isGrounded = function() {
     var steps = window.fez.steps;
     var tolerance = Math.max(-this.vy, 8);
     return steps.playerIsOnAnyStep(this, tolerance) || this.y == 0;
+  };
+
+  this.isAirborne = function() {
+    return !this.isGrounded();
+  };
+
+  this.isMainCharacter = function() {
+    return this.id === 1;
+  };
+
+  this.performJump = function() {
+    this.vy = this.jumpSpeed;
+    this.jumpsUsed = 1;
+    this.jumpFreezing = true;
+    setTimeout(function() {
+      self.jumpFreezing = false;
+    }, jumpFreeze);
+  };
+
+  this.tryDoubleJump = function() {
+    if (!this.isMainCharacter()) return false;
+    if (!window.fez.settings.doubleJumpEnabled) return false;
+    if (this.jumpFreezing || this.dead || this.timeMode) return false;
+    if (!this.isAirborne() || this.jumpsUsed < 1 || this.jumpsUsed >= 2) return false;
+
+    this.vy = this.jumpSpeed;
+    this.jumpsUsed = 2;
+    this.jumpFreezing = true;
+    setTimeout(function() {
+      self.jumpFreezing = false;
+    }, jumpFreeze);
+    return true;
+  };
+
+  this.tryDash = function(direction) {
+    if (!this.isMainCharacter()) return false;
+    if (!window.fez.settings.dashEnabled) return false;
+    if (this.dashFreezing || this.isDashing || this.dead || this.timeMode) return false;
+
+    this.isDashing = true;
+    this.dashDirection = direction;
+    this.dashFramesRemaining = dashDuration;
+    this.vp = direction * dashSpeed;
+    this.facing = direction;
+    this.dashFreezing = true;
+    setTimeout(function() {
+      self.dashFreezing = false;
+    }, dashFreeze);
+    return true;
+  };
+
+  this.handleDirectionPress = function(direction) {
+    if (direction < 0) {
+      this.turnLeft();
+    } else {
+      this.turnRight();
+    }
+
+    if (!this.isMainCharacter() || !window.fez.settings.dashEnabled) return;
+
+    var now = Date.now();
+    if (direction < 0) {
+      if (now - this.lastLeftPress < doubleTapWindow) {
+        this.tryDash(-1);
+      }
+      this.lastLeftPress = now;
+    } else {
+      if (now - this.lastRightPress < doubleTapWindow) {
+        this.tryDash(1);
+      }
+      this.lastRightPress = now;
+    }
   };
 
   this.draw = function() {

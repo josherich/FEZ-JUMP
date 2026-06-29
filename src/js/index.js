@@ -24,5 +24,6 @@ window.fez.poop = new Poop();
 window.fez.steps = new Steps()
 
 await import('./players.js');
+await import('./settings.js');
 await import('./control.js');
 await import('./run.js');
