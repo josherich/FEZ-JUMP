@@ -32,12 +32,12 @@ window.addEventListener('keydown', function(ev) {
 
   // player1 - a - left
   if (ev.keyCode == 65 && !running) {
-    player1.turnLeft();
+    player1.handleDirectionPress(-1);
     ev.preventDefault();
   }
   // player1 - d - right
   if (ev.keyCode == 68 && !running) {
-    player1.turnRight();
+    player1.handleDirectionPress(1);
     ev.preventDefault();
   }
   // player1 - w - jump
@@ -123,9 +123,14 @@ window.addEventListener('keydown', function(ev) {
     })
   }
 
-  // world - space - toggle play/pause
+  // world - space - double jump in air, toggle play/pause on ground
   if (ev.keyCode === 32) {
-    window.fez.control.toggle();
+    if (!running && player1.isAirborne()) {
+      player1.tryDoubleJump();
+      ev.preventDefault();
+    } else {
+      window.fez.control.toggle();
+    }
   }
 }, false);
 
@@ -209,12 +214,12 @@ function bindTouchBtn(id, onStart, onEnd) {
 }
 
 bindTouchBtn('touch-left',
-  function() { window.fez.players[0].turnLeft(); },
+  function() { window.fez.players[0].handleDirectionPress(-1); },
   function() { window.fez.players[0].left = false; }
 );
 
 bindTouchBtn('touch-right',
-  function() { window.fez.players[0].turnRight(); },
+  function() { window.fez.players[0].handleDirectionPress(1); },
   function() { window.fez.players[0].right = false; }
 );
 
