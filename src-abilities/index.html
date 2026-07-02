@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FEZ-JUMP (Abilities)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" type="text/css" href="./css/index.css">
+  <script type="module" src="./js/index.js"></script>
+</head>
+<body>
+
+  <template id="box">
+    <div class="front"><div class="inner"></div></div>
+    <div class="back"><div class="inner"></div></div>
+    <div class="top"><div class="inner"></div></div>
+    <div class="bottom"><div class="inner"></div></div>
+    <div class="left"><div class="inner"></div></div>
+    <div class="right"><div class="inner"></div></div>
+  </template>
+
+  <template id="diamond">
+    <div id="diamond">
+      <div class="front"><div class="inner"></div></div>
+      <div class="back"><div class="inner"></div></div>
+      <div class="top"><div class="inner"></div></div>
+      <div class="bottom"><div class="inner"></div></div>
+      <div class="left"><div class="inner"></div></div>
+      <div class="right"><div class="inner"></div></div>
+    </div>
+  </template>
+  
+  <div class="score-board">
+
+    <div id="score_1">
+      <div class="score">0</div>
+    </div>
+    <div id="score_2">
+      <div class="score">0</div>
+    </div>
+
+  </div>
+
+  <button class="settings-btn" id="settings-btn" title="Settings">&#9881;</button>
+
+  <div class="settings-modal hidden" id="settings-modal">
+    <div class="settings-backdrop" id="settings-backdrop"></div>
+    <div class="settings-panel">
+      <div class="settings-header">
+        <h2>Settings</h2>
+        <button class="settings-close" id="settings-close">&times;</button>
+      </div>
+      <div class="settings-body">
+        <label class="settings-toggle">
+          <span>Dash (double-tap left/right)</span>
+          <input type="checkbox" id="setting-dash" checked>
+        </label>
+        <label class="settings-toggle">
+          <span>Double jump (space in air)</span>
+          <input type="checkbox" id="setting-double-jump" checked>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+  </div>
+
+  <div class="state">
+    <!-- <button id="playing">||</button> -->
+  </div>
+  
+  <div class="player1"></div>
+
+  <div class="touch-controls" id="touch-controls">
+    <div class="touch-group touch-group-left">
+      <button class="touch-btn" id="touch-left">&#9664;</button>
+      <button class="touch-btn" id="touch-right">&#9654;</button>
+    </div>
+    <div class="touch-group touch-group-center">
+      <button class="touch-btn touch-btn-sm" id="touch-rotate-ccw">&#8634;</button>
+      <button class="touch-btn touch-btn-sm" id="touch-rotate-cw">&#8635;</button>
+    </div>
+    <div class="touch-group touch-group-right">
+      <button class="touch-btn touch-btn-jump" id="touch-jump">&#9650;</button>
+      <button class="touch-btn touch-btn-shoot" id="touch-shoot">&#9679;</button>
+    </div>
+  </div>
+
+
+</body>
+</html>
